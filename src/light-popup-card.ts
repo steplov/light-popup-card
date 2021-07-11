@@ -1,12 +1,12 @@
+/* TEST COM */
 import { LitElement, html, css } from 'lit-element';
-import tinycolor, { TinyColor, isReadable } from '@ctrl/tinycolor';
+import tinycolor, { TinyColor } from '@ctrl/tinycolor';
 import { closePopUp } from 'card-tools/src/popup';
-import { fireEvent } from "card-tools/src/event";
-import { provideHass } from "card-tools/src/hass";
-import { createCard } from "card-tools/src/lovelace-element.js";
-import {
-  computeStateDisplay
-} from 'custom-card-helpers';
+import { fireEvent } from 'card-tools/src/event';
+import { provideHass } from 'card-tools/src/hass';
+import { createCard } from 'card-tools/src/lovelace-element.js';
+import { computeStateDisplay } from 'custom-card-helpers';
+
 class LightPopupCard extends LitElement {
   config: any;
   hass: any;
@@ -14,7 +14,7 @@ class LightPopupCard extends LitElement {
   actionRows:any = [];
   settings = false;
   settingsCustomCard = false;
-  settingsPosition = "bottom";
+  settingsPosition = 'bottom';
 
   static get properties() {
     return {
@@ -30,23 +30,23 @@ class LightPopupCard extends LitElement {
   
   render() {
     
-    var entity = this.config.entity;
-    var stateObj = this.hass.states[entity];
-    var actionsInARow = this.config.actionsInARow ? this.config.actionsInARow : 4;
-    var icon = this.config.icon ? this.config.icon : stateObj.attributes.icon ? stateObj.attributes.icon: 'mdi:lightbulb';
-    var borderRadius = this.config.borderRadius ? this.config.borderRadius : '12px';  
-    var supportBrightness = 1;
-    var onStates = this.config.onStates ? this.config.onStates : ['on'];
-    var offStates = this.config.offStates ? this.config.offStates : ['off'];
+    const entity = this.config.entity;
+    const stateObj = this.hass.states[entity];
+    const actionsInARow = this.config.actionsInARow ? this.config.actionsInARow : 4;
+    const icon = this.config.icon ? this.config.icon : stateObj.attributes.icon ? stateObj.attributes.icon: 'mdi:lightbulb';
+    const borderRadius = this.config.borderRadius ? this.config.borderRadius : '12px';  
+    const supportBrightness = 1;
+    const onStates = this.config.onStates ? this.config.onStates : ['on'];
+    const offStates = this.config.offStates ? this.config.offStates : ['off'];
     //Scenes
-    var actionSize = "actionSize" in this.config ? this.config.actionSize : "50px";
-    var actions = this.config.actions;
+    const actionSize = 'actionSize' in this.config ? this.config.actionSize : '50px';
+    const actions = this.config.actions;
     if(actions && actions.length > 0) {
         
-        var numberOfRows = Math.ceil(actions.length / actionsInARow);
-        for(var i=0;i<numberOfRows;i++) {
+        const numberOfRows = Math.ceil(actions.length / actionsInARow);
+        for(let i=0;i<numberOfRows;i++) {
           this.actionRows[i] = [];
-            for(var j=0;j<actionsInARow;j++) {
+            for(let j=0;j<actionsInARow;j++) {
                 if(actions[(i*actionsInARow)+j]) {
                   this.actionRows[i][j] = actions[(i*actionsInARow)+j];
                 }
@@ -54,48 +54,50 @@ class LightPopupCard extends LitElement {
         }
     }
 
-    var switchValue = 0;
+    let switchValue = 0;
 
     if (onStates.includes(stateObj.state)) {
       switchValue = 1;
     }
 
-    var fullscreen = "fullscreen" in this.config ? this.config.fullscreen : true;
-    var brightnessWidth = this.config.brightnessWidth ? this.config.brightnessWidth : "150px";
-    var brightnessHeight = this.config.brightnessHeight ? this.config.brightnessHeight : "400px";
-    var switchWidth = this.config.switchWidth ? this.config.switchWidth : "150px";
-    var switchHeight = this.config.switchHeight ? this.config.switchHeight : "380px";
+    const fullscreen = 'fullscreen' in this.config ? this.config.fullscreen : true;
+    const brightnessWidth = this.config.brightnessWidth ? this.config.brightnessWidth : '150px';
+    const brightnessHeight = this.config.brightnessHeight ? this.config.brightnessHeight : '400px';
+    const switchWidth = this.config.switchWidth ? this.config.switchWidth : '150px';
+    const switchHeight = this.config.switchHeight ? this.config.switchHeight : '380px';
 
-    var color = this._getColorForLightEntity(stateObj, this.config.useTemperature, this.config.useBrightness);
-    var sliderColor = "sliderColor" in this.config ? this.config.sliderColor : "#FFF";
-    var sliderColoredByLight = "sliderColoredByLight" in this.config ? this.config.sliderColoredByLight : false;
-    var sliderThumbColor = "sliderThumbColor" in this.config ? this.config.sliderThumbColor : "#ddd";
-    var sliderTrackColor = "sliderTrackColor" in this.config ? this.config.sliderTrackColor : "#ddd";
-    var switchColor = "switchColor" in this.config ? this.config.switchColor : "#FFF";
-    var switchTrackColor = "switchTrackColor" in this.config ? this.config.switchTrackColor : "#ddd";
-    var actionRowCount = 0;   
-    var displayType =  "displayType" in this.config ? this.config.displayType : "auto";
+    const color = this._getColorForLightEntity(stateObj, this.config.useTemperature, this.config.useBrightness);
+    const sliderColor = 'sliderColor' in this.config ? this.config.sliderColor : '#FFF';
+    const sliderColoredByLight = 'sliderColoredByLight' in this.config ? this.config.sliderColoredByLight : false;
 
-    var hideIcon = "hideIcon" in this.config ? this.config.hideIcon : false;
-    var hideState = "hideState" in this.config ? this.config.hideState : false;
+    const sliderThumbColor = 'sliderThumbColor' in this.config ? this.config.sliderThumbColor : '#ddd';
+    const sliderTrackColor = 'sliderTrackColor' in this.config ? this.config.sliderTrackColor : '#ddd';
+    const switchColor = 'switchColor' in this.config ? this.config.switchColor : '#FFF';
+    const switchTrackColor = 'switchTrackColor' in this.config ? this.config.switchTrackColor : '#ddd';
+    let actionRowCount = 0;   
+    const displayType =  'displayType' in this.config ? this.config.displayType : 'auto';
 
-    this.settings = "settings" in this.config ? true : false;
-    this.settingsCustomCard = "settingsCard" in this.config ? true : false;
-    this.settingsPosition = "settingsPosition" in this.config ? this.config.settingsPosition : "bottom";
+    const hideIcon = 'hideIcon' in this.config ? this.config.hideIcon : false;
+    const hideState = 'hideState' in this.config ? this.config.hideState : false;
+
+    this.settings = 'settings' in this.config ? true : false;
+    this.settingsCustomCard = 'settingsCard' in this.config ? true : false;
+    this.settingsPosition = 'settingsPosition' in this.config ? this.config.settingsPosition : 'bottom';
     if(this.settingsCustomCard && this.config.settingsCard.cardOptions) {
       if(this.config.settingsCard.cardOptions.entity && this.config.settingsCard.cardOptions.entity == 'this') {
         this.config.settingsCard.cardOptions.entity = entity;
       } else if(this.config.settingsCard.cardOptions.entity_id && this.config.settingsCard.cardOptions.entity_id == 'this') {
         this.config.settingsCard.cardOptions.entity_id = entity;
       } else if(this.config.settingsCard.cardOptions.entities) {
-        for(let key in this.config.settingsCard.cardOptions.entities) {
+        for(const key in this.config.settingsCard.cardOptions.entities) {
           if(this.config.settingsCard.cardOptions.entities[key] == 'this') {
             this.config.settingsCard.cardOptions.entities[key] = entity;
           }
         }
       }
     }
-    var brightness = stateObj.attributes.brightness ? Math.round(stateObj.attributes.brightness/2.55) : 0;
+    const brightness = stateObj.attributes.brightness ? Math.round(stateObj.attributes.brightness/2.55) : 0;
+
     return html`
       <div class="${fullscreen === true ? 'popup-wrapper':''}">
             <div id="popup" class="popup-inner" @click="${e => this._close(e)}">
@@ -122,14 +124,14 @@ class LightPopupCard extends LitElement {
 
                     ${this.actionRows.map((actionRow) => {
                       actionRowCount++;
-                      var actionCount = 0;
+                      let actionCount = 0;
                       return html`
                         <div class="action-row">
                         ${actionRow.map((action) => {
                           actionCount++;
                           return html`
                             <div class="action" style="--size:${actionSize};" @click="${e => this._activateAction(e)}" data-service="${actionRowCount}#${actionCount}">
-                                <span class="color" style="background-color: ${action.color};border-color: ${action.color};--size:${actionSize};${action.image ? "background-size: contain;background-image:url('"+action.image+"')" : ""}">${action.icon ? html`<ha-icon icon="${action.icon}" />`:html``}</span>
+                                <span class="color" style="background-color: ${action.color};border-color: ${action.color};--size:${actionSize};${action.image ? 'background-size: contain;background-image:url(\''+action.image+'\')' : ''}">${action.icon ? html`<ha-icon icon="${action.icon}" />`:html``}</span>
                                 ${action.name ? html`<span class="name">${action.name}</span>`: html``}
                             </div>
                           `
@@ -160,27 +162,28 @@ class LightPopupCard extends LitElement {
 
   firstUpdated() {
     if(this.settings && !this.settingsCustomCard) {
-    const mic = this.shadowRoot.querySelector("more-info-controls").shadowRoot;
-    mic.removeChild(mic.querySelector("app-toolbar"));
+    const mic = this.shadowRoot.querySelector('more-info-controls')?.shadowRoot;
+
+    if (mic) { mic.removeChild(mic.querySelector('app-toolbar')); }
     } else if(this.settings && this.settingsCustomCard) {
-      this.shadowRoot.querySelectorAll(".custom-card").forEach(customCard => {
-        var card = {
+      this.shadowRoot.querySelectorAll('.custom-card').forEach(customCard => {
+        let card = {
           type: customCard.dataset.card
         };
         card = Object.assign({}, card, JSON.parse(customCard.dataset.options));
         const cardElement = createCard(card);
         customCard.appendChild(cardElement);
         provideHass(cardElement);
-        let style = "";
+        let style = '';
         if(customCard.dataset.style) {
           style = customCard.dataset.style;
         }
-        if(style!= "") {
+        if(style!= '') {
           let itterations = 0;
-          let interval = setInterval(function() {
+          const interval = setInterval(function() {
               if(cardElement && cardElement.shadowRoot) {
                   window.clearInterval(interval);
-                  var styleElement = document.createElement('style');
+                  const styleElement = document.createElement('style');
                   styleElement.innerHTML = style;
                   cardElement.shadowRoot.appendChild(styleElement);
               } else if(++itterations === 10) {
@@ -199,12 +202,12 @@ class LightPopupCard extends LitElement {
   }
 
   _openSettings() {
-    this.shadowRoot.getElementById('popup').classList.add("off");
-    this.shadowRoot.getElementById('settings').classList.add("on");
+    this.shadowRoot.getElementById('popup').classList.add('off');
+    this.shadowRoot.getElementById('settings').classList.add('on');
   }
   _closeSettings() {
-    this.shadowRoot.getElementById('settings').classList.remove("on");
-    this.shadowRoot.getElementById('popup').classList.remove("off");
+    this.shadowRoot.getElementById('settings').classList.remove('on');
+    this.shadowRoot.getElementById('popup').classList.remove('off');
   }
 
   _createRange(amount) {
@@ -216,45 +219,45 @@ class LightPopupCard extends LitElement {
   }
 
   _previewBrightness(value) {
-    const el = this.shadowRoot.getElementById("brightnessValue");
-    if(el) {el.innerText = (value == 0) ? "Off" : value + "%";}
+    const el = this.shadowRoot.getElementById('brightnessValue');
+    if(el) {el.innerText = (value == 0) ? 'Off' : value + '%';}
   }
 
   _setBrightness(state, value) {
-    this.hass.callService("homeassistant", "turn_on", {
+    this.hass.callService('homeassistant', 'turn_on', {
         entity_id: state.entity_id,
         brightness: value * 2.55
     });
   }
   
   _switch(state) {
-      this.hass.callService("homeassistant", "toggle", {
+      this.hass.callService('homeassistant', 'toggle', {
         entity_id: state.entity_id    
       });
   }
   
   _activateAction(e) {
     if(e.target.dataset && e.target.dataset.service) {
-      const [row, item] = e.target.dataset.service.split("#", 2);
+      const [row, item] = e.target.dataset.service.split('#', 2);
       const action = this.actionRows[row-1][item-1];
-      if(!("action" in action)) {
+      if(!('action' in action)) {
         action.action = 'call-service';
       }
 
       switch (action.action) {
-        case "call-service":
-          const [domain, service] = action.service.split(".", 2);
+        case 'call-service':
+          const [domain, service] = action.service.split('.', 2);
           this.hass.callService(domain, service, action.service_data);
           break;
-        case "fire-dom-event":
-          fireEvent("ll-custom", action);
+        case 'fire-dom-event':
+          fireEvent('ll-custom', action);
           break;
       }
     }
   }
 
   _getColorForLightEntity(stateObj, useTemperature, useBrightness) {
-      var color = this.config.default_color ? this.config.default_color : undefined;
+      let color = this.config.default_color ? this.config.default_color : undefined;
       if (stateObj) {
         if (stateObj.attributes.rgb_color) {
           color = `rgb(${stateObj.attributes.rgb_color.join(',')})`;
@@ -301,7 +304,7 @@ class LightPopupCard extends LitElement {
     }
 
     _getColorFromVariable(color: string): string {
-      if (typeof color !== "undefined" && color.substring(0, 3) === 'var') {
+      if (typeof color !== 'undefined' && color.substring(0, 3) === 'var') {
         return window.getComputedStyle(document.documentElement).getPropertyValue(color.substring(4).slice(0, -1)).trim();
       }
       return color;
@@ -309,7 +312,7 @@ class LightPopupCard extends LitElement {
   
   setConfig(config) {
     if (!config.entity) {
-      throw new Error("You need to define an entity");
+      throw new Error('You need to define an entity');
     }
     this.config = config;
   }
@@ -452,7 +455,6 @@ class LightPopupCard extends LitElement {
             background: var(--slider-color);
             box-shadow: -350px 0 0 350px var(--slider-color), inset 0 0 0 80px var(--slider-thumb-color);
             border-radius: 0;
-            transition: box-shadow 0.2s ease-in-out;
             position: relative;
             top: calc((var(--slider-width) - 80px) / 2);
         }
@@ -477,6 +479,8 @@ class LightPopupCard extends LitElement {
             position: relative;
             top: calc((var(--slider-width) - 80px) / 2);
         }
+
+
         .switch-holder {
             height: var(--switch-height);
             width: var(--switch-width);

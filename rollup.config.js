@@ -1,4 +1,4 @@
-import typescript from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
 import commonjs from 'rollup-plugin-commonjs';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
@@ -27,7 +27,7 @@ const plugins = [
     exclude: 'node_modules/**',
   }),
   dev && serve(serveopts),
-  !dev && terser(),
+  !dev && terser({ format: { comments: false } }),
 ];
 
 export default [
@@ -36,7 +36,7 @@ export default [
     output: {
       dir: 'dist',
       format: 'es',
-      sourcemap: 'inline',
+      sourcemap: dev && 'inline',
     },
     plugins: [...plugins],
   },
